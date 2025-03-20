@@ -57,9 +57,9 @@ class Comment(db.Model):
 
     comment_text = Column(String(100), nullable=False)
 
-    author_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    author_id = Column(Integer, ForeignKey("user.id"), nullable=False, unique=True)
 
-    post_id = Column(Integer, ForeignKey("post.id"), nullable=False)
+    post_id = Column(Integer, ForeignKey("post.id"), nullable=False, unique=True)
 
     #Relación inversa con User
     user = relationship("User", back_populates="comments")
@@ -87,7 +87,7 @@ class Post(db.Model):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     
-    user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=False, unique=True)
 
     #Relación inversa con User
     user = relationship("User", back_populates="posts")
@@ -118,7 +118,7 @@ class Media(db.Model):
     
     url = Column(String(1000), nullable=False)
 
-    post_id = Column(Integer, ForeignKey("post.id"), nullable=False)
+    post_id = Column(Integer, ForeignKey("post.id"), nullable=False, unique=True)
 
     #Relación inversa con Post
     post = relationship("Post", back_populates="medias")
@@ -140,8 +140,8 @@ class Media(db.Model):
 class Follower(db.Model):
 
     __tablename__ = "follower"
-    user_from_id = Column(Integer, ForeignKey("user.id"), nullable=False)
-    user_to_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    user_from_id = Column(Integer, ForeignKey("user.id"), nullable=False, unique=True)
+    user_to_id = Column(Integer, ForeignKey("user.id"), nullable=False, unique=True)
 
     # Definir clave primaria compuesta
     __table_args__ = (PrimaryKeyConstraint('user_from_id', 'user_to_id'),)
